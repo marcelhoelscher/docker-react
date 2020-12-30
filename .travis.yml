@@ -47,3 +47,9 @@ deploy:
   # The deployment should only be carried out when new code is checked into the master repo on github.
   on:
     branch: master
+  
+  # API keys that give travis access to the AWS account. The keys are stores unter the variable names
+  # 'AWS_ACCESS_KEY' and 'AWS_SECRET_KEY' in the travis account.
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
+
