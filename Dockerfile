@@ -15,6 +15,10 @@ RUN npm run build
 # Configuration for the RUN-phase. No tag necessary: A new FROM statement always starts a new phase
 FROM nginx
 
+# Configuration only for Elastic Beanstalk. This AWS service will look into the Dockerfile and search for the 
+# EXPOSE instruction in order to know which port should be mapped.
+EXPOSE 80
+
 # Copy the result of the builder-phase into the nginx container
 # The '--from=build' directive states that we're copying stuff out of the builder-phase
 # The '/app/build' arguments name the location of the files from the builder-phase we want to copy.
