@@ -1,0 +1,28 @@
+version: '3'
+services:
+  web: 
+    # In case the Dockerfile has not the standard name, the following config is necessary
+    build:
+      # Define the context to be in the present working directory. 
+      # If the context is in a subfolder, than give the subfolder name here.
+      context: .
+      # Use the following Dockerfile
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      # Define the volume for the node_modules so that Docker does not try to reference it to the local filesystem
+      - /app/node_modules
+      # Map the root folder (symboled by the '.') in the local filesystem to the 'app'-Folder in the container
+      - .:/app
+  # Separate service for running tests with live update of the test code
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /app/node_modules
+      - .:/app
+    # Override the startup command
+    command: ["npm", "run", "test"]
+  
