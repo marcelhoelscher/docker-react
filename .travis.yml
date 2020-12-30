@@ -1,0 +1,22 @@
+language: generic
+
+# Superuser permission needed when using docker
+sudo: required
+
+# Tell travis that we need Docker preinstalled.
+services:
+  - docker
+
+# Before the tests run we need to build our docker image. 
+# We tag the build image because otherwise we would have to read out the id of the build file which is not that easy
+before_install:
+  - docker build -t stovokhor/docker-react -f Dockerfile.dev .
+
+# Commands to be executed in order to run our test suite
+script:
+  # Run the 'npm run test' command to execute the tests. Travis expects a test suite to shutdown after the run.
+  # Then travis will interprete the exit code. An exit code != 0 means: Failure.
+  # But that's not the way how the npm tests work: The node test suite stays up all the time and waits for source code
+  # changes in order to run the tests again. 
+  # In order to solve this, the "-- --coverage" arguments are added. This is just a hack to force the test suite to exit.
+  - docker run stovokhor/docker-react npm run test -- --coverage
