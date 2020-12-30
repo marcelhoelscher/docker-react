@@ -20,3 +20,30 @@ script:
   # changes in order to run the tests again. 
   # In order to solve this, the "-c CI=true" argument is added which forces the tests to only run once.
   - docker run -e CI=true stovokhor/docker-react npm run test
+
+deploy:
+  # Travis supports a variety of providers, also elasticbeanstalk and so is able to do a huge amount of configuration
+  # automatically
+  provider: elasticbeanstalk
+
+  # Where was the elasticbeanstalk environment originally created? In our case the url of our app is
+  # 'DockerReact-env.eba-p9qgdpmx.eu-central-1.elasticbeanstalk.com' - so the region is the 'eu-central-1' part
+  # of the url.
+  region: "eu-central-1"
+
+  # Name of the app - same name as it can be found in the elasticbeanstalk dashboard
+  app: "docker-react"
+
+  # Name of the environment as it can be found in the elasticbeanstalk dashboard
+  env: "DockerReact-env"
+
+  # When Travis decides to deploy our codebase it will take all the files in the github repo and zip them.
+  # The zip will be copied over to a "S3 Bucket" which is essentially a hard drive running on AWS.
+  # Afterwards Travis will inform Elastic Beanstalk that it has uploaded a zip file which should be used for 
+  # redeploying the app.
+  bucket_name: "elasticbeanstalk-eu-central-1-744862836047"
+  bucket_path: "docker-react"
+
+  # The deployment should only be carried out when new code is checked into the master repo on github.
+  on:
+    branch: master
