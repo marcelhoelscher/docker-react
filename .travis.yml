@@ -18,5 +18,5 @@ script:
   # Then travis will interprete the exit code. An exit code != 0 means: Failure.
   # But that's not the way how the npm tests work: The node test suite stays up all the time and waits for source code
   # changes in order to run the tests again. 
-  # In order to solve this, the "-- --coverage" arguments are added. This is just a hack to force the test suite to exit.
-  - docker run stovokhor/docker-react npm run test -- --coverage
+  # In order to solve this, the "-c CI=true" argument is added which forces the tests to only run once.
+  - docker run -e CI=true stovokhor/docker-react npm run test
